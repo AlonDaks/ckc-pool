@@ -1,5 +1,5 @@
 # Django settings for poolrank project.
-#UPDATES10
+#UPDATES11
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
