@@ -9,4 +9,4 @@ class Match(models.Model):
 	winner_id = models.IntegerField()
 	looser_id = models.IntegerField()
 	date = models.DateField(auto_now=False, auto_now_add=True)
-	is_verified = model.BooleanField(initial=False)
+	is_verified = model.BooleanField()
