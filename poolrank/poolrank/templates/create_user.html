@@ -1,0 +1,20 @@
+<html>
+<body>
+	<h1>Register</h1>
+	<form action="" method="post" accept-charset="utf-8">{% csrf_token %}</br>
+    	<label for="username">Username:</label><input type="text" value="{{username}}" name="username" id="username" /></br>
+        <label for="first_name">First Name:</label><input type="text" value="{{first_name}}" name="first_name" id="first_name" /></br>
+        <label for="last_name">Last Name:</label><input type="text" value="{{last_name}}" name="last_name" id="last_name" /></br>
+    	<label for="email">Email:</label><input type="text" value="{{email}}" name="email" id="email" /></br>
+    	<label for="password">Password:</label><input type="password" value="{{password}}" name="password" id="password" /></br>
+    	<!-- <label for="appointments_hospital">Hospital:</label><input type="text" value="{{hospital}}" name="hospital" id="hospital" /></br>
+    	<label for="appointments_department">Department:</label><input type="text" value="{{department}}" name="department" id="department" /></br>
+    	<label for="appointments_patient_language">Patient Language:</label><input type="text" value="{{patient_language}}" name="patient_language"  id="patient_language"/></br>
+    	<label for="appointsments_spcial_instructions">Special Instructions:</label><input type="text" value="{{special_instructions}}" name="special_instructions" id="special_instructions"/></input></br> -->
+    <p><input type="submit" value="Register"></p>
+    </form>
+
+    {{ form.errors }}
+{{ form.non_field_errors }}
+</body>
+</html>
