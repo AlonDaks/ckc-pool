@@ -6,6 +6,8 @@ from views import *
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+	(r'^Register/$', register),
+	(r'^AccountCreated/$', account_created),
     # Examples:
     # url(r'^$', 'poolrank.views.home', name='home'),
     # url(r'^poolrank/', include('poolrank.foo.urls')),
