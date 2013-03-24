@@ -17,12 +17,16 @@ class Match(models.Model):
 
 class RegistrationForm(forms.Form):
 	username = forms.CharField()
+	first_name = forms.CharField()
+	last_name = forms.CharField()
 	email = forms.EmailField()
 	password = forms.CharField(widget=forms.PasswordInput())
 
 	def save(self):
 		data = self.cleaned_data
 		user = User.objects.create_user(username=data['username'],
-										email=data['email'],
-		 								password=data['password'])
+			first_name=data['first_name'],
+			last_name=data['last_name'],
+			email=data['email'],
+			password=data['password'])
 		user.save()
