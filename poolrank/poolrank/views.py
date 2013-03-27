@@ -10,7 +10,6 @@ def register(request):
         if form.is_valid():
             new_user = form.save()
             return HttpResponseRedirect("/AccountCreated/")
-        # return HttpResponseRedirect("/NotValid/") 
     else:
         form = RegistrationForm()
     return render_to_response("create_user.html", {
