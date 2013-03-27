@@ -1,0 +1,13 @@
+<html>
+<body>
+	<h1>Record a Match</h1>
+	<form action="" method="post" accept-charset="utf-8">{% csrf_token %}</br>
+    	<label for="winner_email">Winner Email:</label><input type="text" value="{{winner_email}}" name="winner_email" id="winner_email" /></br>
+        <label for="looser_email">Looser Email:</label><input type="text" value="{{looser_email}}" name="looser_email" id="looser_email" /></br>
+    <p><input type="submit" value="Submit Match"></p>
+    </form>
+
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+</body>
+</html>
