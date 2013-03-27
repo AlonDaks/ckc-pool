@@ -3,18 +3,6 @@ from django.contrib.auth.models import User, AbstractBaseUser, BaseUserManager
 from django.forms import ModelForm
 from django import forms
 
-# class Ranking(models.Model):
-# 	rating = models.DecimalField(max_digits=21, decimal_places=15)
-# 	num_wins = models.IntegerField()
-# 	num_matches = models.IntegerField()
-# 	user = models.OneToOneField(User)
-
-class Match(models.Model):
-	winner_id = models.IntegerField()
-	looser_id = models.IntegerField()
-	date = models.DateField(auto_now=False, auto_now_add=True)
-	is_verified = models.BooleanField()	
-
 class RegistrationForm(forms.Form):
 	first_name = forms.CharField()
 	last_name = forms.CharField()
@@ -23,12 +11,13 @@ class RegistrationForm(forms.Form):
 
 	def save(self):
 		data = self.cleaned_data
-		user = MyUserManager().create_user(email=data['email'],
+		user = MyUser.objects.create_user(email=data['email'],
 			first_name=data['first_name'],
 			last_name=data['last_name'],
 			password=data['password'])
 		user.save()
-
+		ranking_data = Ranking(user=user, rating=1500, num_wins=0, num_matches=0)
+		ranking_data.save()
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
@@ -39,28 +28,30 @@ class MyUserManager(BaseUserManager):
         if not last_name:
         	raise ValueError('Users must have a last name')
  
-        # user = self.model(
-        #     email=MyUserManager.normalize_email(email),
-        #     first_name=first_name,
-        #     last_name=last_name
-        # )
- 
- 		user = self.model(
-            email="Alon.daks@gmail.com",
-            first_name="alon",
-            last_name="daks"
+        user = self.model(
+            email=MyUserManager.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
+	
+    def create_superuser(self, email, twitter_handle, password):
+        user = self.create_user(email,
+            password=password,
+            twitter_handle=twitter_handle,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+     
 
 
 class MyUser(AbstractBaseUser):
     email = models.EmailField(max_length=254, unique=True, db_index=True)
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
-    #rating = models.DecimalField(max_digits=15, decimal_places=11)
- 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
  
@@ -92,12 +83,41 @@ class MyUser(AbstractBaseUser):
     def is_staff(self):
         # Handle whether the user is a member of staff?"
         return self.is_admin
-    # def create_superuser(self, email, twitter_handle, password):
-    #     user = self.create_user(email,
-    #         password=password,
-    #         twitter_handle=twitter_handle,
-    #     )
-    #     user.is_admin = True
-    #     user.save(using=self._db)
-    #     return user
- 
+
+class Ranking(models.Model):
+	user = models.OneToOneField(MyUser, primary_key=True)
+	rating = models.DecimalField(max_digits=15, decimal_places=11)
+	num_wins = models.IntegerField()
+	num_matches = models.IntegerField()
+
+class Match(models.Model):
+	winner_id = models.IntegerField()
+	looser_id = models.IntegerField()
+	date = models.DateField(auto_now=False, auto_now_add=True)
+	is_verified = models.BooleanField()	        
+
+class MatchEntryForm(forms.Form):
+	winner_email = forms.EmailField()
+	looser_email = forms.EmailField()
+
+	@property
+	def winner_id(self):
+		return MyUser.objects.get(email=self.cleaned_data['winner_email']).id
+
+	@property
+	def looser_id(self):
+		return MyUser.objects.get(email=self.cleaned_data['looser_email']).id
+
+	def save(self):
+		data = self.cleaned_data
+		winner_email = data['winner_email']
+		looser_email = data['looser_email']
+		winner = MyUser.objects.get(email=winner_email)
+		looser = MyUser.objects.get(email=looser_email)
+		match = Match(winner_id=winner.id, looser_id=looser.id)
+		match.save()
+
+
+
+
+

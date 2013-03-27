@@ -8,6 +8,8 @@ from views import *
 urlpatterns = patterns('',
 	(r'^Register/$', register),
 	(r'^AccountCreated/$', account_created),
+	(r'^Rankings/$', rankings),
+	(r'^RecordMatch/$', record_match),
     # Examples:
     # url(r'^$', 'poolrank.views.home', name='home'),
     # url(r'^poolrank/', include('poolrank.foo.urls')),
