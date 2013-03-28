@@ -5,16 +5,19 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from decimal import *
 
-def register(request):
+def register(request, error=None):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            return HttpResponseRedirect("/AccountCreated/")
+            if form.clean_password():
+                user = form.save()
+                return HttpResponseRedirect("/AccountCreated/")
+            else:
+                return HttpResponseRedirect("/Register/Password")
     else:
         form = RegistrationForm()
     return render_to_response("create_user.html", {
-        'form': form,
+        'form': form, 'error': error,
     }, context_instance=RequestContext(request))
 
 def record_match(request):

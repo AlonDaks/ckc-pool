@@ -6,7 +6,8 @@ from views import *
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	(r'^Register/$', register),
+    (r'^Register/$', register),
+	(r'^Register/(\w+)/$', register),
 	(r'^AccountCreated/$', account_created),
 	(r'^Rankings/$', rankings),
 	(r'^RecordMatch/$', record_match),
