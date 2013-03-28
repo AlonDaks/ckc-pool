@@ -38,8 +38,17 @@ def account_created(request):
 
 def rankings(request):
     ranking_objects = Ranking.objects.order_by('-rating')
-    num_objects = len(ranking_objects)
-    return render_to_response("rankings.html", {'ranks':ranking_objects, 'num': num_objects})
+    prev, ranks, rank_counter = None, [], 0
+    for elem in ranking_objects:
+        name = elem.user.first_name+" "+elem.user.last_name
+        rank_counter+=1
+        if prev and elem.rating == prev.rating:
+            previous_rank = ranks[-1][0]
+            ranks.append([previous_rank, name, str(elem.rating)[:8]])
+        else:
+            ranks.append([rank_counter, name, str(elem.rating)[:8]])
+        prev = elem
+    return render_to_response("rankings.html", {'ranks':ranks})
 
 def elo_update(winner_id, looser_id):
     winner = Ranking.objects.get(user_id=winner_id)

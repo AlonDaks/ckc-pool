@@ -15,7 +15,7 @@ class RegistrationForm(forms.Form):
         user = MyUser.objects.create_user(email=data['email'],
             first_name=data['first_name'],
             last_name=data['last_name'],
-            password=data['password'])
+            password=data['password1'])
         user.save()
         ranking_data = Ranking(user=user, rating=1500, num_wins=0, num_matches=0)
         ranking_data.save()

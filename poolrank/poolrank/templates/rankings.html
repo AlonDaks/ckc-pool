@@ -3,16 +3,14 @@
 	<table>
     <tr>
         <th>Ranking</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Name</th>
         <th>Rating</th>
     </tr>
     {% for item in ranks %}
     <tr>
-        <td>{{ forloop.counter }}</td> 
-        <td>{{ item.user.first_name }}</td>
-        <td>{{ item.user.last_name }}</td>
-        <td>{{ item.rating }}</td>
+        <td>{{ item.0 }}</td> 
+        <td>{{ item.1 }}</td>
+        <td>{{ item.2 }}</td>
     </tr>
     {% endfor %}
 </table>
