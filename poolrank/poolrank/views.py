@@ -26,7 +26,7 @@ def record_match(request):
         if form.is_valid():
             form.save()
             elo_update(form.winner_id, form.looser_id)
-            return HttpResponseRedirect("/AccountCreated/")
+            return HttpResponseRedirect("/Rankings/")
     else:
         form = MatchEntryForm()
     return render_to_response("record_match.html", {
